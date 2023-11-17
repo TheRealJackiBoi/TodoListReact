@@ -1,58 +1,36 @@
 import "./App.css";
-import Input from "./components/Input";
-import Todo from "./components/Todo";
-import { useState } from "react";
+import TodoGroup from "./components/TodoGroup";
+import {useEffect, useState} from "react";
+import Login from "./components/auth/Login";
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
 
-  library.add(fas);
-  const [lastId, setLastId] = useState(0);
-  const [todos, setTodos] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [user, setUser] = useState(null);
+  
+  
+  useEffect(() => {
+    // TODO: fetch groups from api using user service
+    setGroups[{}]
+  }, [user])
 
-  const getNewId = () => {
-    setLastId(lastId + 1)
-    return lastId
+  const handleSetUser = (user) => {
+    setUser(user);
   }
 
-  const updateTodos = (newTodo) => {
-    setTodos([...todos, newTodo]);
-  };
-
-  const removeTodo = todoId => {
-    setTodos(todos.filter(todo => todo.id !== todoId))
-  }
-
-  const handleRemoveAll = () => {
-    setTodos([])
-  }
 
   return (
-    <div className="container">
-      <div className="todo">
+    <div className="">
 
-        {/* Header */}
-        <div className="header">
-          <h1>To-Do List</h1>
-        </div>
+      {/* Login */}
+      <Login handleSetUser={handleSetUser} />
 
-        {/* Input Todo */}
-        <Input addHandler={updateTodos} getId={getNewId}/>
-        
-        {/* Todos */}
-        <ul className="task-list">
-        {todos.length ? (
-          todos.map((todo, index) => <Todo key={index} todo={todo} removeTodo={removeTodo}/>)
-        ) : (
-          <p></p>
+      {/* TodoGroups */}
+      {groups.map((group, index) => 
+        <TodoGroup key={index} group={group}/>
         )}
-        </ul>
-
-        {/* Remove ALL Button */}
-        <button className="task-remove-all" onClick={handleRemoveAll}>Remove All</button>
-      </div>
+      <TodoGroup />
     </div>
   );
 }
